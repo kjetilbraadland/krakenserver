@@ -9,36 +9,11 @@ namespace aspnetcoreapp.Models
 {
     public class Repository : IRepository
     {
-        //private static ConcurrentDictionary<string, Item> _todos = new ConcurrentDictionary<string, Item>();
         private readonly ItemsContext _itemsContext = new ItemsContext();
 
         public Repository()
         {
-            //Add(new Item { Name = "Item1" });
-            //Add(new Item { Name = "Item2" });
 
-            // try
-            // {
-            //     using (var db = new ItemsContext())
-            //     {
-            //         db.Items.Add(new Item { Name = "Item1" });
-            //         db.Items.Add(new Item { Name = "Item2" });
-            //         var count = db.SaveChanges();
-            //         Console.WriteLine("{0} records saved to database", count);
-
-            //         Console.WriteLine();
-            //         Console.WriteLine("All blogs in database:");
-            //         foreach (var item in db.Items)
-            //         {
-            //             Console.WriteLine(" - {0}", item.Key);
-            //         }
-            //     }
-
-            // }
-            // catch (Exception ex)
-            // {
-
-            // }
         }
 
         public IEnumerable<Item> GetAll()
@@ -83,16 +58,31 @@ namespace aspnetcoreapp.Models
             var orignal = _itemsContext.Items.First(i => i.Key == item.Key);
             orignal.Name = item.Name;
             orignal.IsComplete = item.IsComplete;
+            orignal.ReservedBy = item.ReservedBy;
+            orignal.FilePath = item.FilePath;            
             _itemsContext.SaveChanges();
         }
 
         public void RemoveAll()
         {
-            foreach(var row in _itemsContext.Items)
+            foreach (var row in _itemsContext.Items)
             {
                 _itemsContext.Items.Remove(row);
             }
             _itemsContext.SaveChanges();
+        }
+
+        public Item GetNextItem(string aClient)
+        {
+            var item = _itemsContext.Items.First(i => i.ReservedBy == aClient);
+            if (item == null)
+            {
+                item = _itemsContext.Items.First(i => i.ReservedBy == string.Empty);
+                item.ReservedBy = aClient;
+                Update(item);
+            }
+
+            return item;
         }
     }
 }

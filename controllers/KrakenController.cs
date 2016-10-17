@@ -13,7 +13,7 @@ namespace aspnetcoreapp.Controllers
             Items = items;
 
             //Items.RemoveAll();
-            
+
         }
         public IRepository Items { get; set; }
 
@@ -107,5 +107,15 @@ namespace aspnetcoreapp.Controllers
             Items.Remove(id);
             return new NoContentResult();
         }
+        
+        // public IActionResult GetByClient(string id)
+        // {
+        //     var item = Items.GetNextItem(id);
+        //     if (item == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return new ObjectResult(item);
+        // }       
     }
 }
