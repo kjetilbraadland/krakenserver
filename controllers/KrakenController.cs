@@ -5,9 +5,9 @@ using aspnetcoreapp.Models;
 namespace aspnetcoreapp.Controllers
 {
     [Route("api/[controller]")]
-    public class MyFunController : Controller
+    public class KrakenController : Controller
     {
-        public MyFunController(IRepository items)
+        public KrakenController(IRepository items)
         {
             Items = items;
         }
