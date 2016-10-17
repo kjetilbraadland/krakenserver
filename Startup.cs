@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using aspnetcoreapp.Models;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using aspnetcoreapp.Database;
 
 namespace aspnetcoreapp
 {
@@ -47,7 +49,14 @@ namespace aspnetcoreapp
             else
             {
                 //Other then Development
+
             }
+
+            using (var db = new ItemsContext())
+            {
+                db.Database.EnsureCreated();
+            }
+
             //Add static file module
             app.UseStaticFiles();
             //Use Identity Module
@@ -61,6 +70,8 @@ namespace aspnetcoreapp
             services.AddMvc();
 
             services.AddSingleton<IRepository, Repository>();
+
+            services.AddEntityFrameworkSqlite().AddDbContext<ItemsContext>();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using aspnetcoreapp.Models;
+using System.Text.Encodings.Web;
 
 namespace aspnetcoreapp.Controllers
 {
@@ -12,6 +13,18 @@ namespace aspnetcoreapp.Controllers
             Items = items;
         }
         public IRepository Items { get; set; }
+
+        // [HttpGet]
+        // public string Index()
+        // {
+        //     return "This is my default action...";
+        // }
+
+        // [HttpGet]
+        // public string Welcome()
+        // {
+        //     return "This is the Welcome action method...";
+        // }
 
         [HttpGet]
         public IEnumerable<Item> GetAll()
