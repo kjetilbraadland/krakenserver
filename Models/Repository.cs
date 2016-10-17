@@ -12,6 +12,7 @@ namespace aspnetcoreapp.Models
         public Repository()
         {
             Add(new Item { Name = "Item1" });
+            Add(new Item { Name = "Item2" });
         }
 
         public IEnumerable<Item> GetAll()

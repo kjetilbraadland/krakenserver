@@ -19,7 +19,7 @@ namespace aspnetcoreapp.Controllers
             return Items.GetAll();
         }
 
-        [HttpGet("{id}", Name = "GetTodo")]
+        [HttpGet("{id}", Name = "GetItem")]
         public IActionResult GetById(string id)
         {
             var item = Items.Find(id);
@@ -28,6 +28,68 @@ namespace aspnetcoreapp.Controllers
                 return NotFound();
             }
             return new ObjectResult(item);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Item item)
+        {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            Items.Add(item);
+            return CreatedAtRoute("GetItem", new { id = item.Key }, item);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, [FromBody] Item item)
+        {
+            if (item == null || item.Key != id)
+            {
+                return BadRequest();
+            }
+
+            var todo = Items.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            Items.Update(item);
+            return new NoContentResult();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult Update([FromBody] Item item, string id)
+        {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            var todo = Items.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            item.Key = todo.Key;
+
+            Items.Update(item);
+            return new NoContentResult();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
+        {
+            var todo = Items.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            Items.Remove(id);
+            return new NoContentResult();
         }
     }
 }
