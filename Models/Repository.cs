@@ -49,15 +49,25 @@ namespace aspnetcoreapp.Models
         public void Add(Item item)
         {
             item.Key = Guid.NewGuid().ToString();
-            _itemsContext.Items.Add(item);
-            _itemsContext.SaveChanges();
 
+            if (!_itemsContext.Items.Any(i => i.Key == item.Key || i.ItemId == item.ItemId))
+            {
+                _itemsContext.Add(new Item { Name = item.Name, IsComplete = item.IsComplete });
+                _itemsContext.SaveChanges();
+            }
         }
 
         public Item Find(string key)
-        {            
-            var item = _itemsContext.Items.First(i => i.Key == key);
-            return item;
+        {
+            try
+            {
+                Item item = _itemsContext.Items.First(i => i.Key == key);
+                return item;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public Item Remove(string key)
@@ -70,9 +80,19 @@ namespace aspnetcoreapp.Models
 
         public void Update(Item item)
         {
-            var orignal = _itemsContext.Items.First( i => i.Key == item.Key);
-            orignal = item;
-            _itemsContext.SaveChanges();        
+            var orignal = _itemsContext.Items.First(i => i.Key == item.Key);
+            orignal.Name = item.Name;
+            orignal.IsComplete = item.IsComplete;
+            _itemsContext.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            foreach(var row in _itemsContext.Items)
+            {
+                _itemsContext.Items.Remove(row);
+            }
+            _itemsContext.SaveChanges();
         }
     }
 }

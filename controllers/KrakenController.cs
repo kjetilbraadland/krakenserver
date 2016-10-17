@@ -11,6 +11,9 @@ namespace aspnetcoreapp.Controllers
         public KrakenController(IRepository items)
         {
             Items = items;
+
+            //Items.RemoveAll();
+            
         }
         public IRepository Items { get; set; }
 

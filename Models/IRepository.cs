@@ -9,5 +9,7 @@ namespace aspnetcoreapp.Models
         Item Find(string key);
         Item Remove(string key);
         void Update(Item item);
+
+        void RemoveAll();
     }
 }
