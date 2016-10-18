@@ -22,10 +22,9 @@ namespace aspnetcoreapp.Models
         }
 
         public void Add(Item item)
-        {
-            item.Key = Guid.NewGuid().ToString();
+        {         
 
-            if (!_itemsContext.Items.Any(i => i.Key == item.Key || i.ItemId == item.ItemId))
+            if (!_itemsContext.Items.Any(i => i.ItemId == item.ItemId))
             {
                 _itemsContext.Add(new Item { Name = item.Name, IsComplete = item.IsComplete });
                 _itemsContext.SaveChanges();
