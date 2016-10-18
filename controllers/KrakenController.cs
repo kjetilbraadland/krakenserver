@@ -8,14 +8,15 @@ namespace aspnetcoreapp.Controllers
     [Route("api/[controller]/[action]")]
     public class KrakenController : Controller
     {
+        public IRepository Items { get; set; }
+
         public KrakenController(IRepository items)
         {
             Items = items;
 
             //Items.RemoveAll();
 
-        }
-        public IRepository Items { get; set; }
+        }        
 
         [HttpGet]
         public string Welcome()
