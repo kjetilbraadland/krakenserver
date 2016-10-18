@@ -59,7 +59,7 @@ namespace aspnetcoreapp.Models
             orignal.Name = item.Name;
             orignal.IsComplete = item.IsComplete;
             orignal.ReservedBy = item.ReservedBy;
-            orignal.FilePath = item.FilePath;            
+            orignal.FilePath = item.FilePath;
             _itemsContext.SaveChanges();
         }
 
@@ -74,12 +74,15 @@ namespace aspnetcoreapp.Models
 
         public Item GetNextItem(string aClient)
         {
-            var item = _itemsContext.Items.First(i => i.ReservedBy == aClient);
+            var item = _itemsContext.Items.FirstOrDefault(i => i.ReservedBy == aClient);
             if (item == null)
             {
-                item = _itemsContext.Items.First(i => i.ReservedBy == string.Empty);
-                item.ReservedBy = aClient;
-                Update(item);
+                item = _itemsContext.Items.FirstOrDefault(i => String.IsNullOrEmpty(i.ReservedBy));
+                if (item != null)
+                {
+                    item.ReservedBy = aClient;
+                    Update(item);
+                }
             }
 
             return item;
