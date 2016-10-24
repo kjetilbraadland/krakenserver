@@ -14,29 +14,41 @@ namespace aspnetcoreapp.Models
         public Repository()
         {
 
+            if (_itemsContext.Items.Count() == 0)
+            {
+                MyFile f1 = new MyFile() { FilePath = "gg" };
+                Job j = new Job() { Name = "Dummy", Files = new List<MyFile> { f1 } };
+                Add(j);
+            }
         }
 
-        public IEnumerable<Item> GetAll()
+        public IEnumerable<Job> GetAll()
         {
             return _itemsContext.Items;
         }
 
-        public void Add(Item item)
+        public void Add(Job item)
         {
-            item.Key = Guid.NewGuid().ToString();
 
-            if (!_itemsContext.Items.Any(i => i.Key == item.Key || i.ItemId == item.ItemId))
+            try
             {
-                _itemsContext.Add(new Item { Name = item.Name, IsComplete = item.IsComplete });
-                _itemsContext.SaveChanges();
+                if (!_itemsContext.Items.Any(i => i.JobId == item.JobId))
+                {
+                    _itemsContext.Add(new Job { Name = item.Name, IsComplete = item.IsComplete, Files = item.Files });
+                    _itemsContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
-        public Item Find(string key)
+        public Job Find(string key)
         {
             try
             {
-                Item item = _itemsContext.Items.First(i => i.Key == key);
+                Job item = _itemsContext.Items.First(i => i.Key == key);
                 return item;
             }
             catch (Exception ex)
@@ -45,21 +57,21 @@ namespace aspnetcoreapp.Models
             }
         }
 
-        public Item Remove(string key)
+        public Job Remove(string key)
         {
-            Item item = _itemsContext.Items.First(i => i.Key == key);
+            Job item = _itemsContext.Items.First(i => i.Key == key);
             _itemsContext.Items.Remove(item);
             _itemsContext.SaveChanges();
             return item;
         }
 
-        public void Update(Item item)
+        public void Update(Job item)
         {
             var orignal = _itemsContext.Items.First(i => i.Key == item.Key);
             orignal.Name = item.Name;
             orignal.IsComplete = item.IsComplete;
             orignal.ReservedBy = item.ReservedBy;
-            orignal.FilePath = item.FilePath;            
+            orignal.Files = item.Files;
             _itemsContext.SaveChanges();
         }
 
@@ -72,14 +84,17 @@ namespace aspnetcoreapp.Models
             _itemsContext.SaveChanges();
         }
 
-        public Item GetNextItem(string aClient)
+        public Job GetNextItem(string aClient)
         {
-            var item = _itemsContext.Items.First(i => i.ReservedBy == aClient);
+            var item = _itemsContext.Items.FirstOrDefault(i => i.ReservedBy == aClient);
             if (item == null)
             {
-                item = _itemsContext.Items.First(i => i.ReservedBy == string.Empty);
-                item.ReservedBy = aClient;
-                Update(item);
+                item = _itemsContext.Items.FirstOrDefault(i => String.IsNullOrEmpty(i.ReservedBy));
+                if (item != null)
+                {
+                    item.ReservedBy = aClient;
+                    Update(item);
+                }
             }
 
             return item;

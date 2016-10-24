@@ -4,14 +4,14 @@ namespace aspnetcoreapp.Models
 {
     public interface IRepository
     {
-        void Add(Item item);
-        IEnumerable<Item> GetAll();
-        Item Find(string key);
-        Item Remove(string key);
-        void Update(Item item);
+        void Add(Job item);
+        IEnumerable<Job> GetAll();
+        Job Find(string key);
+        Job Remove(string key);
+        void Update(Job item);
         void RemoveAll();
 
-        Item GetNextItem(string client);
+        Job GetNextItem(string client);
         
     }
 }

@@ -5,32 +5,27 @@ using System.Text.Encodings.Web;
 
 namespace aspnetcoreapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class KrakenController : Controller
     {
+        public IRepository Items { get; set; }
+
         public KrakenController(IRepository items)
         {
             Items = items;
 
             //Items.RemoveAll();
 
-        }
-        public IRepository Items { get; set; }
-
-        // [HttpGet]
-        // public string Index()
-        // {
-        //     return "This is my default action...";
-        // }
-
-        // [HttpGet]
-        // public string Welcome()
-        // {
-        //     return "This is the Welcome action method...";
-        // }
+        }        
 
         [HttpGet]
-        public IEnumerable<Item> GetAll()
+        public string Welcome()
+        {
+            return "This is the Welcome action method...";
+        }
+
+        [HttpGet]
+        public IEnumerable<Job> GetAll()
         {
             return Items.GetAll();
         }
@@ -46,8 +41,19 @@ namespace aspnetcoreapp.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("{client}")]
+        public IActionResult GetByClient(string client)
+        {
+            var item = Items.GetNextItem(client);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(item);
+        }
+
         [HttpPost]
-        public IActionResult Create([FromBody] Item item)
+        public IActionResult Create([FromBody] Job item)
         {
             if (item == null)
             {
@@ -58,7 +64,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody] Item item)
+        public IActionResult Update(string id, [FromBody] Job item)
         {
             if (item == null || item.Key != id)
             {
@@ -76,7 +82,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Update([FromBody] Item item, string id)
+        public IActionResult Update([FromBody] Job item, string id)
         {
             if (item == null)
             {
@@ -107,15 +113,5 @@ namespace aspnetcoreapp.Controllers
             Items.Remove(id);
             return new NoContentResult();
         }
-        
-        // public IActionResult GetByClient(string id)
-        // {
-        //     var item = Items.GetNextItem(id);
-        //     if (item == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return new ObjectResult(item);
-        // }       
     }
 }

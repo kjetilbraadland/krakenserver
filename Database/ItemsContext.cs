@@ -8,7 +8,7 @@ namespace aspnetcoreapp.Database
 {
     public class ItemsContext : DbContext
     {
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Job> Items { get; set; }
         //public DbSet<Item> Posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
