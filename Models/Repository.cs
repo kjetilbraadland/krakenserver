@@ -14,6 +14,12 @@ namespace aspnetcoreapp.Models
         public Repository()
         {
 
+            if (_itemsContext.Items.Count() == 0)
+            {
+                File f1 = new File() { FilePath = "gg" };
+                Job j = new Job() { Name = "Dummy", Files = new List<File> { f1 } };
+                Add(j);
+            }
         }
 
         public IEnumerable<Job> GetAll()
@@ -22,12 +28,19 @@ namespace aspnetcoreapp.Models
         }
 
         public void Add(Job item)
-        {         
+        {
 
-            if (!_itemsContext.Items.Any(i => i.JobId == item.JobId))
+            try
             {
-                _itemsContext.Add(new Job { Name = item.Name, IsComplete = item.IsComplete });
-                _itemsContext.SaveChanges();
+                if (!_itemsContext.Items.Any(i => i.JobId == item.JobId))
+                {
+                    _itemsContext.Add(new Job { Name = item.Name, IsComplete = item.IsComplete, Files = item.Files });
+                    _itemsContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
