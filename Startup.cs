@@ -54,7 +54,14 @@ namespace aspnetcoreapp
 
             using (var db = new ItemsContext())
             {
-                db.Database.EnsureCreated();
+                try
+                {
+                    db.Database.EnsureCreated();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
             //Add static file module

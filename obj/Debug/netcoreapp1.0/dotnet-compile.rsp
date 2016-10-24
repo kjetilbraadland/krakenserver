@@ -181,6 +181,7 @@ c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Program.cs
 c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Startup.cs
 c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\controllers\KrakenController.cs
 c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Database\ItemsContext.cs
+c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Models\File.cs
 c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Models\IRepository.cs
-c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Models\Item.cs
+c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Models\Job.cs
 c:\Users\kjetil.braadland\Documents\GitRepos\kraken\krakenserver\Models\Repository.cs

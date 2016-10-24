@@ -25,7 +25,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Item> GetAll()
+        public IEnumerable<Job> GetAll()
         {
             return Items.GetAll();
         }
@@ -53,7 +53,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Item item)
+        public IActionResult Create([FromBody] Job item)
         {
             if (item == null)
             {
@@ -64,7 +64,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody] Item item)
+        public IActionResult Update(string id, [FromBody] Job item)
         {
             if (item == null || item.Key != id)
             {
@@ -82,7 +82,7 @@ namespace aspnetcoreapp.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Update([FromBody] Item item, string id)
+        public IActionResult Update([FromBody] Job item, string id)
         {
             if (item == null)
             {
