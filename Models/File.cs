@@ -1,8 +1,8 @@
 namespace aspnetcoreapp.Models
 {
-    public class File
+   public class MyFile
     {      
-        public int FileId { get; set; }
+        public int MyFileId { get; set; }
         public string FilePath {get;set;}
     }
 }

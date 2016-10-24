@@ -16,8 +16,8 @@ namespace aspnetcoreapp.Models
 
             if (_itemsContext.Items.Count() == 0)
             {
-                File f1 = new File() { FilePath = "gg" };
-                Job j = new Job() { Name = "Dummy", Files = new List<File> { f1 } };
+                MyFile f1 = new MyFile() { FilePath = "gg" };
+                Job j = new Job() { Name = "Dummy", Files = new List<MyFile> { f1 } };
                 Add(j);
             }
         }
