@@ -13,11 +13,10 @@ namespace aspnetcoreapp.Models
 
         public Repository()
         {
-
             if (_itemsContext.Items.Count() == 0)
             {
                 MyFile f1 = new MyFile() { FilePath = "gg" };
-                Job j = new Job() { Name = "Dummy", Files = new List<MyFile> { f1 } };
+                Job j = new Job() { Name = "Dummy", Files = new List<MyFile> { f1 }, Command = "excute" };
                 Add(j);
             }
         }
@@ -29,12 +28,11 @@ namespace aspnetcoreapp.Models
 
         public void Add(Job item)
         {
-
             try
             {
                 if (!_itemsContext.Items.Any(i => i.JobId == item.JobId))
                 {
-                    _itemsContext.Add(new Job { Name = item.Name, IsComplete = item.IsComplete, Files = item.Files });
+                    _itemsContext.Add(new Job { Name = item.Name, IsComplete = item.IsComplete, Files = item.Files, Command = item.Command });
                     _itemsContext.SaveChanges();
                 }
             }
@@ -72,6 +70,7 @@ namespace aspnetcoreapp.Models
             orignal.IsComplete = item.IsComplete;
             orignal.ReservedBy = item.ReservedBy;
             orignal.Files = item.Files;
+            orignal.Command = item.Command;
             _itemsContext.SaveChanges();
         }
 

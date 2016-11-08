@@ -11,5 +11,6 @@ namespace aspnetcoreapp.Models
         public bool IsComplete { get; set; }
         public string ReservedBy { get; set; }
         public List<MyFile> Files { get; set; }
+        public string Command{get; set;} 
     }
 }
