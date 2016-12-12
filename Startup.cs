@@ -16,6 +16,9 @@ using Microsoft.Extensions.Logging;
 using aspnetcoreapp.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using aspnetcoreapp.Database;
+using Microsoft.AspNetCore.Mvc.Razor;
+
+using React.AspNet;
 
 namespace aspnetcoreapp
 {
@@ -32,14 +35,23 @@ namespace aspnetcoreapp
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //Add MVC module and specify Root
-            app.UseMvc();
-            app.UseMvc(routes =>
+
+            loggerFactory.AddConsole();
+
+            if (env.IsDevelopment())
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+
+            //Add MVC module and specify Root
+            // app.UseMvc();
+            // app.UseMvc(routes =>
+            // {
+            //     routes.MapRoute(
+            //         name: "default",
+            //         template: "{controller=Home}/{action=Index}/{id?}");
+            // });
 
             //Perform environment specific task
             if (env.IsDevelopment())
@@ -64,8 +76,33 @@ namespace aspnetcoreapp
                 }
             }
 
+            app.UseReact(config =>
+            {
+                // If you want to use server-side rendering of React components,
+                // your components as well as all of their dependencies.
+                // See http://reactjs.net/ for more information. Example:
+                //config
+                //  .AddScript("~/Scripts/First.jsx")
+                //  .AddScript("~/Scripts/Second.jsx");
+
+                // If you use an external build too (for example, Babel, Webpack,
+                // Browserify or Gulp), you can improve performance by disabling
+                // ReactJS.NET's version of Babel and loading the pre-transpiled
+                // scripts. Example:
+                //config
+                //  .SetLoadBabel(false)
+                //  .AddScriptWithoutTransform("~/Scripts/bundle.server.js");
+
+                //config.AddScript("~/js/remarkable.min.js").AddScript("~/js/Tutorial.jsx");
+                // config
+                //     .SetReuseJavaScriptEngines(true)
+                //     .AddScript("~/js/Admin.jsx")
+                //     .SetUseDebugReact(true);
+            });
+
             //Add static file module
             app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
             //Use Identity Module
             //app.UseIdentity();
         }
@@ -73,8 +110,12 @@ namespace aspnetcoreapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();           
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc();           
 
             services.AddSingleton<IRepository, Repository>();
 

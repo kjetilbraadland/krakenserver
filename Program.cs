@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using aspnetcoreapp;
+using System.IO;
 
 namespace ConsoleApplication
 {
@@ -8,7 +9,7 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder().UseKestrel().UseUrls("http://*:5000").UseStartup<Startup>().Build();
+            var host = new WebHostBuilder().UseKestrel().UseContentRoot(Directory.GetCurrentDirectory()).UseUrls("http://*:5000").UseStartup<Startup>().Build();
 
             host.Run();
         }
